@@ -2,6 +2,7 @@ input1 = gets.chomp.split(',')
 input2 = gets.chomp.split(',')
 num = 0
 result_array = []
+SCORE_MAPPING = {-4 => 'コンドル',-3 => 'アルバトロス',-2 => 'イーグル',-1 => 'バーディ',0 => 'パー',1 => 'ボギー',99 => 'ホールインワン'}
 
 while input1.count > num
   par = input1[num].to_i
@@ -9,27 +10,11 @@ while input1.count > num
   result = strokes - par
 
   if strokes == 1 && par != 5
-    result_array.push('ホールインワン')
-  elsif result == 0
-    result_array.push('パー')
-  elsif result > 0
-    if result == 1
-      result_array.push("ボギー")
-    else
-      result_array.push("#{result}ボギー")
-    end
-  elsif result == -1
-    result_array.push('バーディ')
-  elsif result == -2
-    result_array.push('イーグル')
-  elsif result == -3
-    if par == 4
-      result_array.push('パー')
-    elsif par == 5
-      result_array.push('アルバトロス')
-    end
-  elsif result == -4
-    result_array.push('コンドル')
+    result_array.push("#{SCORE_MAPPING[99]}")
+  elsif result > 1
+    result_array.push("#{result}#{SCORE_MAPPING[1]}")
+  else
+    result_array.push(SCORE_MAPPING[result])
   end
 
   num += 1
