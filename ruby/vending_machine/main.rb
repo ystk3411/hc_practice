@@ -9,7 +9,7 @@ v = VendingMachine.new
 # ステップ1　Suica
 
 # 預かり金(デポジット)として500円がデフォルトでチャージされているものとする
-puts v.get_deposit
+puts s.deposit
 
 # Suicaには100円以上の任意の金額をチャージできる
 random = Random.new
@@ -19,7 +19,7 @@ puts s.charge("#{random.rand(100..1000)}".to_i)
 puts s.charge(99)
 
 # Suicaは現在のチャージ残高を取得できる
-puts v.get_deposit
+puts s.deposit
 # -------------------------------------------------------------------------------------------
 # ステップ2　ジュースの管理
 
@@ -41,13 +41,13 @@ puts v.get_stock
 # ・自動販売機はジュースの在庫を減らす
 # ・売り上げ金額を増やす
 # ・Suicaのチャージ残高を減らす
-puts v.purchase(v.pepsi), v.get_stock, v.get_sales, v.get_deposit
+puts v.purchase(v.pepsi,s), v.get_stock, v.sales, s.deposit
 
 # チャージ残高が足りない場合もしくは在庫がない場合、購入操作を行った場合は例外を発生させる
-puts(3.times { v.purchase(v.pepsi) }, v.charge(1000), 3.times { v.purchase(v.pepsi) })
+puts(3.times { v.purchase(v.pepsi,s) }, s.charge(1000), 3.times { v.purchase(v.pepsi,s) })
 
 # 自動販売機は現在の売上金額を取得できる
-puts v.get_sales
+puts v.sales
 # -------------------------------------------------------------------------------------------
 # ステップ4　機能拡張
 
@@ -58,13 +58,13 @@ p v.monster, v.water
 puts v.get_stock
 
 # 自動販売機は購入可能なドリンクのリストを取得できる
-puts v.available_drink_list
+puts v.available_drink_list(s)
 
 # 自動販売機に在庫を補充できるようにする
 v.restock(v.pepsi)
 puts v.get_stock
 
 # ステップ3と同様の方法でモンスターといろはすを購入できる
-v.purchase(v.monster)
-v.purchase(v.water)
+v.purchase(v.monster,s)
+v.purchase(v.water,s)
 puts v.get_stock
