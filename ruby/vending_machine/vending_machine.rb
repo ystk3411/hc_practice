@@ -32,7 +32,7 @@ class VendingMachine
 
   # 在庫表示
   def get_stock
-    @stocks.group_by{|value| value.name}.map{|key,value| [key,"#{value.count}本"]}.to_h
+    @stocks.group_by { |value| value.name }.map { |key, value| [key, "#{value.count}本"] }.to_h
   end
 
   # 商品補充
@@ -51,23 +51,22 @@ class VendingMachine
 
   # 在庫有無確認
   def have_stock?(drink)
-    @stocks.select do |value|
+    @stocks.find do |value|
       drink.name == value.name
-    end.size > 0
+    end
   end
 
   # 購入
-  def purchase(drink,suica)
-    if have_stock?(drink) && suica.deposit > drink.price
-      index = @stocks.find_index { |x| x.name == drink.name }
-      @stocks.delete_at(index)
-      @sales += drink.price
-      suica.spend(drink.price)
-    elsif suica.deposit < drink.price
-      p 'suicaの残高が足りません'
-    elsif have_stock?(drink) == false
-      p '売り切れです'
-    end
+  def purchase(drink, suica)
+    raise 'suicaの残高が足りません' if suica.deposit < drink.price
+    raise '売り切れです' unless have_stock?(drink)
+
+    return unless have_stock?(drink) && suica.deposit > drink.price
+
+    index = @stocks.find_index { |x| x.name == drink.name }
+    @stocks.delete_at(index)
+    @sales += drink.price
+    suica.spend(drink.price)
   end
 
   # 購入可能なドリンクのリストを取得
@@ -81,7 +80,3 @@ class VendingMachine
     list.keys
   end
 end
-
-v = VendingMachine.new
-suica = Suica.new
-p v.purchase(v.pepsi,suica),v.purchase(v.pepsi,suica)
