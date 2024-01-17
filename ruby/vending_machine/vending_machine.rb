@@ -61,8 +61,6 @@ class VendingMachine
     raise 'suicaの残高が足りません' if suica.deposit < drink.price
     raise '売り切れです' unless have_stock?(drink)
 
-    return unless have_stock?(drink) && suica.deposit > drink.price
-
     index = @stocks.find_index { |x| x.name == drink.name }
     @stocks.delete_at(index)
     @sales += drink.price
