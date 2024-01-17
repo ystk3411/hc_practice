@@ -1,6 +1,6 @@
 module NameService
   def changeName(newName)
-    print('不適切な名前です') if @name == 'うんこ'
+    p '不適切な名前です' if newName == 'うんこ'
 
     @name = newName
   end

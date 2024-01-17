@@ -11,6 +11,6 @@ class Pokemon
   end
 
   def attack
-    p "#{@name}のこうげき"
+    "#{@name}のこうげき"
   end
 end
